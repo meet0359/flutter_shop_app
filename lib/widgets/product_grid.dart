@@ -1,0 +1,37 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/product.dart';
+import './product_item.dart';
+import '../providers/products.dart';
+
+class ProducstGrid extends StatelessWidget {
+  final bool showFavs;
+  ProducstGrid(this.showFavs);
+  @override
+  Widget build( context) {
+    final productsData = Provider.of<Products>(context);
+    final products = showFavs? productsData.favoriteItems:productsData.items;
+    return GridView.builder(
+      padding: const EdgeInsets.all(10.0),
+      itemCount: products.length,
+      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+        value: products[i],
+        // create: (BuildContext context) =>products[i],
+        child: ProductItem(
+            // id: products[i].id,
+            // title: products[i].title,
+            // imageurl: products[i].imageUrl,
+            ),
+      ),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 1,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+    );
+  }
+}
